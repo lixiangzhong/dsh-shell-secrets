@@ -1,0 +1,26 @@
+# dsh-shell-secrets 作为独立 bundle 安装时的 patch 行。
+#
+# 只有走 `dsh plugin --profile <profile> add <此目录>` 这条安装路径时，本文件才会
+# 被当作 bundle 层加载；此时补丁里的相对 `name` 会被锚定到本文件所在目录。
+#
+# ⚠️ 安装方式提示：本 bundle 的 patch 同时做两件事——停用官方 bash-sandbox 行、
+# 插入自己的 shell 执行器。通过插件管理器在**运行中的** dsh 上首次安装时，
+# HMR 可能先挂新行、再拆旧行，从而撞上 "service shell has been registered"。
+# 稳妥做法：先只发布"停用 bash-sandbox"的阶段一 patch，等旧行释放后再发布本文件
+# 的完整 patch（详见 NOTES.md 的「两阶段安装」）。
+
+# 官方 bash-sandbox 行必须先关掉：两个实现会争同一个 `shell` 服务，
+# cordis 对此会大声报重复服务（这是刻意的失败模式，不要靠顺序去赌）。
+- id: bash-sandbox
+  disabled: true
+
+- insert:
+    - id: shell-secrets
+      # 用包名而不是 ./lib/index.js：这样插件页的行标题、描述、图标都能从本包的
+      # locale/icon 元数据解析出来（file URL 形式没有元数据，行标题会是一长串路径）。
+      name: '@lixiangzhong/dsh-shell-secrets'
+      # 与官方 bash-sandbox 行同值，替换后行为保持不变。
+      config:
+        timeoutMs: 60000
+      # 本期只覆盖 bash；Windows 的 pwsh 走 SandboxPwshExecutor，可同构补充。
+      disabled: !!js process.platform === 'win32'

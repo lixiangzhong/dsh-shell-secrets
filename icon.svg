@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Shell secrets">
+  <rect width="64" height="64" rx="14" fill="#1f2937"/>
+  <path d="M14 22l9 8-9 8" fill="none" stroke="#e5e7eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="40" cy="28" r="8" fill="none" stroke="#fbbf24" stroke-width="4"/>
+  <path d="M40 36v14" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 43h6M40 49h4" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+</svg>

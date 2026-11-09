@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Shell secrets",
+    "description": "Re-inject credential-named variables from the launching environment into bash subprocesses, and configure the variable-name pattern in the Plugins page."
+  }
+}
