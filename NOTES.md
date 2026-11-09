@@ -73,7 +73,19 @@ dsh plugin --profile web remove @lixiangzhong/dsh-shell-secrets && dsh plugin --
 | --- | --- | --- |
 | 0.1.0 | 2026-09-11 | 首个公开版本：原名注入、启动期自检、MIT |
 | 0.1.1 | 2026-09-11 | 文档更新：README 改为对公版，内部笔记移入 NOTES.md（代码与 0.1.0 一致） |
-| 0.2.0 | 未发布 | 插件页配置界面：行 Config 追加 volatile `pattern`，`plugins.row.config` 表单，保存后免重启生效 |
+| 0.2.0 | 2026-11-09 | 插件页配置界面：行 Config 追加 volatile `pattern`，`plugins.row.config` 表单，保存后免重启生效；适配 dsh 0.2.x `execute` 接缝；npm 发布 |
+
+> **0.2.0 发布后本机已切换到 npm 加载。** `desktop` profile 的 dependency 从 `link:` 开发挂载
+> 改成 `@lixiangzhong/dsh-shell-secrets 0.2.0`（node_modules 下是真实目录，行 moduleName 为包名）。
+> 运行中热切换的步骤（避免 `service "shell"` 重复）：
+>
+> 1. `plugin_manager set_plugin include:bash-sandbox enabled=false` 先停官方执行器；
+> 2. `remove_bundle` 移除旧的 `link:` 挂载；
+> 3. `install_bundle target=@lixiangzhong/dsh-shell-secrets@0.2.0 registry=https://registry.npmjs.org`；
+> 4. 删掉 profile patch 里临时的 `- id: bash-sandbox / disabled: true` 覆盖——npm 包的 bundle patch
+>    已经负责停用官方行。
+>
+> 之后本机改代码需要重新发版（或临时切回 `file:`/`link:` 调试），npm 包不会跟随仓库改动。
 
 > **发布需要 2FA 的一次性密码。** `npm publish` 在非交互环境会直接失败：
 > `EOTP This operation requires a one-time password. ... Open this URL in your browser to authenticate`。
